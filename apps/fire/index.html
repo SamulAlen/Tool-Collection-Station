@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>烟花秀 - Firework Show</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Canvas层 -->
+    <canvas id="bg-canvas"></canvas>
+    <canvas id="fw-canvas"></canvas>
+    <canvas id="overlay-canvas"></canvas>
+
+    <!-- 控制台 -->
+    <div class="firework-console visible" id="firework-console">
+        <div class="console-header">
+            <div class="header-left">
+                <svg class="firework-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L14 10L12 12L10 10L12 2Z" fill="currentColor"/>
+                    <path d="M12 22L10 14L12 12L14 14L12 22Z" fill="currentColor"/>
+                    <path d="M2 12L10 14L12 12L10 10L2 12Z" fill="currentColor"/>
+                    <path d="M22 12L14 10L12 12L14 14L22 12Z" fill="currentColor"/>
+                    <path d="M5 5L11 11L12 12L11 13L5 19L4 18L10 12L4 6L5 5Z" fill="currentColor"/>
+                    <path d="M19 5L13 11L12 12L13 13L19 19L18 20L12 14L18 8L19 5Z" fill="currentColor"/>
+                    <path d="M5 19L11 13L12 12L13 11L19 5L18 4L12 10L6 4L5 19Z" fill="currentColor"/>
+                    <path d="M19 19L13 13L12 12L11 11L5 19L6 20L12 14L18 20L19 19Z" fill="currentColor"/>
+                </svg>
+                <div class="header-title-group">
+                    <span class="console-title">烟花控制台</span>
+                    <span class="console-status" id="console-status">Ready to Launch</span>
+                </div>
+            </div>
+            <div class="header-controls">
+                <button class="header-btn play-btn" id="play-btn" title="手动发射">
+                    <svg class="play-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5V19L19 12L8 5Z"/>
+                    </svg>
+                    <svg class="pause-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 4H10V20H6V4ZM14 4H18V20H14V4Z"/>
+                    </svg>
+                    <span class="btn-text">手动</span>
+                </button>
+                <button class="header-btn atmosphere-btn" id="atmosphere-launch" title="氛围发射">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/>
+                    </svg>
+                    <span class="btn-text">氛围</span>
+                </button>
+                <button class="header-btn collapse-btn" id="collapse-btn" title="折叠控制台">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M7 10L12 15L17 10H7Z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="console-content">
+            <!-- 颜色控制行 -->
+            <div class="color-control-row">
+                <div class="color-control-top">
+                    <div class="color-label">
+                        <svg class="palette-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="currentColor"/>
+                            <circle cx="12" cy="12" r="6" fill="currentColor"/>
+                        </svg>
+                        <span class="color-label-text">调整色调</span>
+                    </div>
+                    <span class="color-mode-text" id="color-mode-text">固定模式</span>
+                </div>
+                <div class="color-mode-row">
+                    <div class="color-indicator" id="color-indicator">
+                        <div class="color-preview-circle" id="color-preview"></div>
+                        <svg class="rainbow-icon" width="32" height="32" viewBox="0 0 32 32" style="display:none;">
+                            <circle cx="16" cy="16" r="14" fill="url(#rainbow-gradient)"/>
+                            <defs>
+                                <linearGradient id="rainbow-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#ff0000"/>
+                                    <stop offset="17%" stop-color="#ff8000"/>
+                                    <stop offset="33%" stop-color="#ffff00"/>
+                                    <stop offset="50%" stop-color="#00ff00"/>
+                                    <stop offset="67%" stop-color="#0080ff"/>
+                                    <stop offset="83%" stop-color="#8000ff"/>
+                                    <stop offset="100%" stop-color="#ff0080"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <input type="range" class="hue-slider" id="hue-slider" min="0" max="360" value="330">
+                </div>
+            </div>
+
+            <!-- 烟花类型选择行 -->
+            <div class="firework-types-row">
+                <button class="firework-type-btn heart-btn" data-type="heart" title="觅虹甜心">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5C2 5.41 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.08C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.41 22 8.5C22 12.27 18.6 15.36 13.45 20.03L12 21.35Z"/>
+                    </svg>
+                    <span class="firework-type-name">觅虹甜心</span>
+                </button>
+                <button class="firework-type-btn star-btn" data-type="star" title="超新星">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                    </svg>
+                    <span class="firework-type-name">超新星</span>
+                </button>
+                <button class="firework-type-btn rings-btn" data-type="rings" title="全息光环">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="8"/>
+                        <circle cx="12" cy="12" r="4"/>
+                    </svg>
+                    <span class="firework-type-name">全息光环</span>
+                </button>
+                <button class="firework-type-btn radial-btn" data-type="radial" title="液态金芒">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L14 10H22L16 15L18 23L12 18L6 23L8 15L2 10H10L12 2ZM12 6L11 10H7L10 12L9 16L12 14L15 16L14 12L17 10H13L12 6Z"/>
+                    </svg>
+                    <span class="firework-type-name">液态金芒</span>
+                </button>
+                <button class="firework-type-btn fan-btn" data-type="fan" title="数码流呈">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M13 3L11 9H4L10 13L8 20L13 15L18 20L16 13L22 9H15L13 3Z"/>
+                        <path d="M13 7L12 10H8L11 12L10 16L13 14L16 16L15 12L18 10H14L13 7Z" opacity="0.5"/>
+                    </svg>
+                    <span class="firework-type-name">数码流呈</span>
+                </button>
+                <button class="firework-type-btn flower-btn" data-type="flower" title="机械繁花">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2Z"/>
+                        <path d="M12 22C13.1 22 14 21.1 14 20C14 18.9 13.1 18 12 18C10.9 18 10 18.9 10 20C10 21.1 10.9 22 12 22Z"/>
+                        <path d="M2 12C2 13.1 2.9 14 4 14C5.1 14 6 13.1 6 12C6 10.9 5.1 10 4 10C2.9 10 2 10.9 2 12Z"/>
+                        <path d="M22 12C22 13.1 21.1 14 20 14C18.9 14 18 13.1 18 12C18 10.9 18.9 10 20 10C21.1 10 22 10.9 22 12Z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M5.5 5.5C6.3 4.7 7.6 4.7 8.4 5.5C9.2 6.3 9.2 7.6 8.4 8.4C7.6 9.2 6.3 9.2 5.5 8.4C4.7 7.6 4.7 6.3 5.5 5.5Z"/>
+                        <path d="M18.5 5.5C19.3 6.3 19.3 7.6 18.5 8.4C17.7 9.2 16.4 9.2 15.6 8.4C14.8 7.6 14.8 6.3 15.6 5.5C16.4 4.7 17.7 4.7 18.5 5.5Z"/>
+                        <path d="M5.5 18.5C6.3 17.7 7.6 17.7 8.4 18.5C9.2 19.3 9.2 20.6 8.4 21.4C7.6 22.2 6.3 22.2 5.5 21.4C4.7 20.6 4.7 19.3 5.5 18.5Z"/>
+                        <path d="M18.5 18.5C19.3 17.7 19.3 16.4 18.5 15.6C17.7 14.8 16.4 14.8 15.6 15.6C14.8 16.4 14.8 17.7 15.6 18.5C16.4 19.3 17.7 19.3 18.5 18.5Z"/>
+                    </svg>
+                    <span class="firework-type-name">机械繁花</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OPEN CONSOLE按钮 -->
+    <button class="open-console-btn" id="open-console">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/>
+        </svg>
+        <span>OPEN CONSOLE</span>
+    </button>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/screen-flash.js"></script>
+    <script src="js/background.js"></script>
+    <script src="js/particle.js"></script>
+    <script src="js/fireworks.js"></script>
+    <script src="js/firework.js"></script>
+    <script src="js/canvas.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

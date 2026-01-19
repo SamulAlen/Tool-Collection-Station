@@ -1,0 +1,732 @@
+/* ===================================
+   响应式设计
+   =================================== */
+
+/* 超大屏 (1400px+) */
+@media (min-width: 1400px) {
+    :root {
+        --container-max-width: 1320px;
+    }
+
+    .hero-title {
+        font-size: 4.5rem;
+    }
+
+    .section-title {
+        font-size: 3rem;
+    }
+
+    .projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 桌面 (992px - 1399px) */
+@media (max-width: 1399px) {
+    :root {
+        --container-max-width: 1140px;
+    }
+
+    .hero-visual {
+        width: 300px;
+        height: 300px;
+    }
+
+    .shape-1 {
+        width: 150px;
+        height: 150px;
+    }
+
+    .shape-2 {
+        width: 100px;
+        height: 100px;
+    }
+
+    .shape-3 {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+/* 平板横屏 (768px - 991px) */
+@media (max-width: 991px) {
+    :root {
+        --container-max-width: 960px;
+    }
+
+    /* 导航栏调整 */
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: var(--bg-card);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: var(--spacing-xl);
+        transition: right 0.3s ease;
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .hamburger {
+        display: flex;
+        z-index: 1001;
+    }
+
+    .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+    }
+
+    /* 英雄区调整 */
+    .hero-section {
+        padding: 100px var(--spacing-lg) var(--spacing-2xl);
+    }
+
+    .hero-title {
+        font-size: 3rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+
+    .hero-visual {
+        display: none;
+    }
+
+    /* 内容区块调整 */
+    section {
+        padding: var(--spacing-xl) var(--spacing-lg);
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    /* 网格布局调整 */
+    .about-content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xl);
+    }
+
+    .about-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .blog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* 联系区调整 */
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+
+    /* 返回顶部按钮调整 */
+    .back-to-top {
+        bottom: var(--spacing-lg);
+        right: var(--spacing-lg);
+        width: 45px;
+        height: 45px;
+    }
+}
+
+/* 平板竖屏 (576px - 767px) */
+@media (max-width: 767px) {
+    :root {
+        --container-max-width: 720px;
+    }
+
+    html {
+        font-size: 15px;
+    }
+
+    /* 容器调整 */
+    .container {
+        padding: 0 var(--spacing-md);
+    }
+
+    /* 导航栏 */
+    .logo-image {
+        width: 35px;
+        height: 35px;
+    }
+
+    .logo-text {
+        font-size: 1.3rem;
+    }
+
+    .nav-links {
+        width: 80%;
+    }
+
+    .nav-link {
+        font-size: 1.1rem;
+    }
+
+    /* 英雄区 */
+    .hero-section {
+        min-height: auto;
+        padding: 100px var(--spacing-md) var(--spacing-xl);
+    }
+
+    .avatar-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .hero-typewriter {
+        font-size: 1rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .btn {
+        width: 100%;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    /* 社交链接 */
+    .social-links {
+        flex-wrap: wrap;
+    }
+
+    .social-link {
+        width: 45px;
+        height: 45px;
+        font-size: 0.75rem;
+    }
+
+    /* 区块样式 */
+    section {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+
+    .section-header {
+        margin-bottom: var(--spacing-xl);
+    }
+
+    /* 统计卡片 */
+    .stat-card {
+        padding: var(--spacing-lg);
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+    }
+
+    /* 技能标签 */
+    .skill-tabs {
+        gap: var(--spacing-sm);
+    }
+
+    .skill-tab {
+        padding: var(--spacing-xs) var(--spacing-md);
+        font-size: 0.9rem;
+    }
+
+    /* 技能网格 */
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* 项目网格 */
+    .projects-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+
+    .project-image {
+        height: 180px;
+    }
+
+    /* 博客网格 */
+    .blog-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* 时间轴 */
+    .timeline {
+        padding: var(--spacing-md) 0;
+    }
+
+    /* 联系表单 */
+    .contact-form {
+        padding: var(--spacing-lg);
+    }
+
+    /* 页脚 */
+    .footer {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .footer-social {
+        flex-wrap: wrap;
+    }
+}
+
+/* 手机横屏 (480px - 575px) */
+@media (max-width: 575px) {
+    :root {
+        --container-max-width: 100%;
+    }
+
+    html {
+        font-size: 14px;
+    }
+
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    /* 英雄区 */
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .hero-buttons {
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .scroll-indicator {
+        display: none;
+    }
+
+    /* 区块 */
+    section {
+        padding: var(--spacing-md) var(--spacing-sm);
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .section-header {
+        margin-bottom: var(--spacing-lg);
+    }
+
+    /* 统计卡片 */
+    .about-stats {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+
+    .stat-card {
+        padding: var(--spacing-md);
+    }
+
+    .stat-number {
+        font-size: 2rem;
+    }
+
+    /* 技能 */
+    .skill-tabs {
+        flex-direction: column;
+    }
+
+    .skill-tab {
+        width: 100%;
+    }
+
+    /* 项目 */
+    .project-content {
+        padding: var(--spacing-md);
+    }
+
+    .project-image {
+        height: 150px;
+    }
+
+    /* 博客 */
+    .blog-card {
+        padding: var(--spacing-md);
+    }
+
+    /* 联系 */
+    .contact-item {
+        padding: var(--spacing-md);
+    }
+
+    .contact-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .contact-form {
+        padding: var(--spacing-md);
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+
+    /* 返回顶部 */
+    .back-to-top {
+        width: 40px;
+        height: 40px;
+        bottom: var(--spacing-md);
+        right: var(--spacing-md);
+    }
+
+    .back-to-top svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* 手机竖屏 (< 480px) */
+@media (max-width: 479px) {
+    html {
+        font-size: 13px;
+    }
+
+    /* 导航 */
+    .logo {
+        font-size: 1.1rem;
+    }
+
+    .hamburger span {
+        width: 20px;
+        height: 2px;
+    }
+
+    /* 英雄区 */
+    .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .hero-typewriter {
+        font-size: 0.9rem;
+        margin-bottom: var(--spacing-md);
+    }
+
+    /* 按钮 */
+    .btn {
+        padding: var(--spacing-xs) var(--spacing-md);
+        font-size: 0.9rem;
+    }
+
+    /* 区块标题 */
+    .section-title {
+        font-size: 1.3rem;
+    }
+
+    .section-divider {
+        width: 60px;
+        height: 3px;
+    }
+
+    /* 统计 */
+    .stat-number {
+        font-size: 1.8rem;
+    }
+
+    /* 技能卡片 */
+    .skill-card {
+        padding: var(--spacing-md);
+    }
+
+    .skill-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    /* 项目 */
+    .project-card {
+        border-radius: var(--border-radius-sm);
+    }
+
+    .project-image {
+        height: 120px;
+    }
+
+    .tech-tag {
+        font-size: 0.75rem;
+        padding: 2px var(--spacing-xs);
+    }
+
+    /* 博客 */
+    .blog-card {
+        border-left-width: 3px;
+    }
+
+    /* 联系 */
+    .contact-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .contact-item h4,
+    .contact-item p {
+        margin-bottom: 0;
+    }
+
+    /* 页脚 */
+    .footer p {
+        font-size: 0.9rem;
+    }
+
+    .footer-social a {
+        font-size: 0.9rem;
+    }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+    /* 增加触摸目标大小 */
+    .btn,
+    .nav-link,
+    .social-link,
+    .project-link,
+    .skill-tab,
+    .back-to-top {
+        min-height: 44px;
+        min-width: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* 移除悬停效果 */
+    .hover-lift:hover {
+        transform: none;
+    }
+
+    .project-card:hover {
+        transform: none;
+    }
+
+    .skill-card:hover {
+        transform: none;
+    }
+
+    .stat-card:hover {
+        transform: none;
+    }
+
+    .contact-item:hover {
+        transform: none;
+    }
+
+    /* 始终显示覆盖层 */
+    .project-overlay {
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.6);
+    }
+
+    /* 触摸反馈 */
+    .btn:active {
+        transform: scale(0.95);
+    }
+
+    .social-link:active,
+    .project-link:active {
+        transform: scale(0.9);
+    }
+}
+
+/* 高分辨率设备优化 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* 优化字体渲染 */
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* 打印样式 */
+@media print {
+    /* 隐藏不需要打印的元素 */
+    .navbar,
+    .particle-canvas,
+    .hero-buttons,
+    .social-links,
+    .scroll-indicator,
+    .back-to-top,
+    .contact-form,
+    .footer,
+    .hamburger {
+        display: none !important;
+    }
+
+    /* 调整布局 */
+    .hero-section {
+        min-height: auto;
+        padding: 2rem;
+        background: white;
+        color: black;
+    }
+
+    .hero-title {
+        color: black;
+        font-size: 2rem;
+    }
+
+    section {
+        page-break-inside: avoid;
+        padding: 1rem;
+    }
+
+    .timeline::before {
+        background: #ccc;
+    }
+
+    .timeline-dot {
+        background: #666;
+        border-color: white;
+        box-shadow: none;
+    }
+
+    /* 移除动画 */
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    /* 文字颜色调整 */
+    body,
+    .timeline-content h3,
+    .timeline-content p,
+    .skill-info h3,
+    .project-content h3,
+    .project-description {
+        color: black !important;
+    }
+
+    /* 背景色调整 */
+    .about-section,
+    .skills-section,
+    .projects-section,
+    .blog-section,
+    .testimonials-section,
+    .contact-section {
+        background: white !important;
+    }
+
+    .stat-card,
+    .skill-card,
+    .project-card,
+    .blog-card,
+    .testimonial-card,
+    .contact-item,
+    .contact-form {
+        background: white !important;
+        box-shadow: none !important;
+        border: 1px solid #ddd;
+    }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-primary: #f5f5f5;
+        --text-secondary: #b0b0b0;
+        --text-light: #888;
+        --bg-section: #1a1a2e;
+        --bg-light: #16213e;
+        --bg-card: rgba(26, 26, 46, 0.95);
+    }
+
+    .navbar {
+        background: rgba(26, 26, 46, 0.9);
+    }
+
+    .particle-canvas {
+        opacity: 0.3;
+    }
+
+    .timeline-content::before {
+        border-color: transparent transparent transparent var(--bg-card);
+    }
+
+    .timeline-item:nth-child(even) .timeline-content::before {
+        border-color: transparent var(--bg-card) transparent transparent;
+    }
+}
+
+/* 性能优化 - 减少动画 */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .scroll-behavior {
+        scroll-behavior: auto;
+    }
+}
+
+/* 横屏模式 */
+@media (orientation: landscape) and (max-height: 600px) {
+    .hero-section {
+        padding: 60px var(--spacing-lg);
+        min-height: 100vh;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-visual {
+        display: none;
+    }
+
+    section {
+        padding: var(--spacing-lg) var(--spacing-lg);
+    }
+}

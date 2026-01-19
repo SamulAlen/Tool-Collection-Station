@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>神秘塔罗 - 探索命运的奥秘</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Canvas 层叠 -->
+    <canvas id="bg-canvas"></canvas>
+    <canvas id="tarot-canvas"></canvas>
+    <canvas id="overlay-canvas"></canvas>
+
+    <!-- 欢迎界面 -->
+    <div class="welcome-screen" id="welcome-screen">
+        <div class="welcome-content">
+            <h1 class="main-title">神秘塔罗</h1>
+            <p class="subtitle">探索命运的奥秘</p>
+            <button class="start-btn" id="start-btn">
+                <span class="btn-text">开始占卜</span>
+                <div class="btn-glow"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- 牌阵选择界面 -->
+    <div class="spread-selector" id="spread-selector" style="display: none;">
+        <button class="nav-btn spread-back-btn" id="spread-back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>返回</span>
+        </button>
+        <div class="selector-content">
+            <h2 class="selector-title">选择牌阵</h2>
+            <div class="spread-grid" id="spread-grid">
+                <!-- 牌阵选项将通过JS生成 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 占卜主界面 -->
+    <div class="reading-container" id="reading-container" style="display: none;">
+        <!-- 顶部导航栏 -->
+        <div class="top-bar">
+            <button class="nav-btn back-btn" id="back-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>返回</span>
+            </button>
+            <span class="reading-title" id="reading-title">三牌阵占卜</span>
+            <button class="nav-btn reset-btn" id="reset-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 4v6h-6M1 20v-6h6"/>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                </svg>
+                <span>重置</span>
+            </button>
+        </div>
+
+        <!-- 卡牌操作区 -->
+        <div class="card-actions" id="card-actions">
+            <button class="action-btn shuffle-btn" id="shuffle-btn">
+                <div class="btn-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 16v5h-5M2 11l5-5 5 5M4 16v5h5M21 8l-5 5-5-5"/>
+                    </svg>
+                </div>
+                <span class="btn-text">洗牌</span>
+            </button>
+            <button class="action-btn draw-btn" id="draw-btn" disabled>
+                <div class="btn-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <path d="M12 8v8M8 12h8"/>
+                    </svg>
+                </div>
+                <span class="btn-text" id="draw-text">抽牌 (0/1)</span>
+            </button>
+        </div>
+
+        <!-- 解读面板 -->
+        <div class="interpretation-panel" id="interpretation-panel">
+            <div class="panel-header">
+                <h3 class="panel-title">牌面解读</h3>
+                <button class="close-panel-btn" id="close-panel-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="panel-content" id="panel-content">
+                <p class="panel-placeholder">完成抽牌后查看解读</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 音效控制 -->
+    <button class="sound-toggle" id="sound-toggle">
+        <div class="sound-icon-on" id="sound-icon-on">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+        </div>
+        <div class="sound-icon-off" id="sound-icon-off" style="display: none;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                <line x1="23" y1="9" x2="17" y2="15"/>
+                <line x1="17" y1="9" x2="23" y2="15"/>
+            </svg>
+        </div>
+    </button>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/tarot-data.js"></script>
+    <script src="js/background.js"></script>
+    <script src="js/particle.js"></script>
+    <script src="js/canvas.js"></script>
+    <script src="js/card.js"></script>
+    <script src="js/deck.js"></script>
+    <script src="js/shuffle.js"></script>
+    <script src="js/spread.js"></script>
+    <script src="js/interpretation.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/init.js"></script>
+</body>
+</html>

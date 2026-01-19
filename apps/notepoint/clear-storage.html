@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清除数据</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+        button {
+            padding: 12px 24px;
+            margin: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .clear-btn {
+            background: #ef4444;
+            color: white;
+        }
+        .back-btn {
+            background: #2563eb;
+            color: white;
+        }
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 6px;
+            display: none;
+        }
+        .success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>清除知识图谱数据</h1>
+        <p>点击下面的按钮清除本地存储的所有节点数据</p>
+        <button class="clear-btn" onclick="clearData()">清除数据</button>
+        <button class="back-btn" onclick="goBack()">返回主页</button>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        function clearData() {
+            localStorage.removeItem('knowledgeGraph');
+            const message = document.getElementById('message');
+            message.textContent = '✓ 数据已成功清除！';
+            message.className = 'message success';
+            message.style.display = 'block';
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

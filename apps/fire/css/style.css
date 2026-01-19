@@ -1,0 +1,503 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Canvas层叠 */
+#bg-canvas, #fw-canvas, #overlay-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#bg-canvas {
+    z-index: 1;
+}
+
+#fw-canvas {
+    z-index: 2;
+}
+
+#overlay-canvas {
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* 控制台 */
+.firework-console {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 700px;
+    background: rgba(20, 20, 35, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    z-index: 100;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(12px);
+    overflow: hidden;
+}
+
+.firework-console.hidden {
+    transform: translateX(-50%) translateY(150%);
+    opacity: 0;
+}
+
+.firework-console.visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* 控制台头部 */
+.console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.firework-icon {
+    color: rgba(255, 255, 255, 0.8);
+    flex-shrink: 0;
+}
+
+.header-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.console-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    letter-spacing: 0.3px;
+}
+
+.console-status {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13px;
+}
+
+.header-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+.header-btn:active {
+    transform: translateY(0);
+}
+
+.header-btn .btn-text {
+    font-size: 13px;
+}
+
+/* 播放/暂停按钮 */
+.play-btn {
+    min-width: 85px;
+}
+
+.play-btn .pause-icon {
+    display: none;
+}
+
+.play-btn.playing .play-icon {
+    display: none;
+}
+
+.play-btn.playing .pause-icon {
+    display: block;
+}
+
+.play-btn svg {
+    flex-shrink: 0;
+}
+
+/* 氛围按钮 */
+.atmosphere-btn {
+    background: linear-gradient(135deg, #ff6b9d 0%, #ff8a80 50%, #ffa07a 100%);
+}
+
+.atmosphere-btn:hover {
+    background: linear-gradient(135deg, #ff85ad 0%, #ff9d99 50%, #ffb49a 100%);
+}
+
+/* 折叠按钮 */
+.collapse-btn {
+    padding: 8px 10px;
+}
+
+/* 控制台内容区 */
+.console-content {
+    padding: 16px 20px 20px;
+}
+
+/* 颜色控制行 */
+.color-control-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+}
+
+.color-control-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.color-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.palette-icon {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.color-label-text {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.color-mode-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.color-mode-text {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.color-mode-text:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.color-mode-text.random {
+    color: #a78bfa;
+}
+
+.color-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.color-preview-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: #ff6ba0;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.color-preview-circle::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    background: inherit;
+    filter: blur(8px);
+    opacity: 0.6;
+    z-index: -1;
+}
+
+.rainbow-icon {
+    width: 32px;
+    height: 32px;
+    animation: rainbow-color-shift 2s linear infinite;
+    position: relative;
+}
+
+.rainbow-icon::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    border-radius: 50%;
+    background: inherit;
+    filter: blur(10px);
+    opacity: 0.7;
+    z-index: -1;
+}
+
+@keyframes rainbow-rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes rainbow-color-shift {
+    0% { filter: hue-rotate(0deg) brightness(1.1); }
+    50% { filter: hue-rotate(180deg) brightness(1.3); }
+    100% { filter: hue-rotate(360deg) brightness(1.1); }
+}
+
+.hue-slider {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right,
+        hsl(0, 100%, 50%),
+        hsl(60, 100%, 50%),
+        hsl(120, 100%, 50%),
+        hsl(180, 100%, 50%),
+        hsl(240, 100%, 50%),
+        hsl(300, 100%, 50%),
+        hsl(360, 100%, 50%)
+    );
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.hue-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.hue-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* 烟花类型选择行 */
+.firework-types-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.firework-type-btn {
+    flex: 1;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.75);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    gap: 6px;
+}
+
+.firework-type-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.15), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.firework-type-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.firework-type-btn:hover::before {
+    opacity: 1;
+}
+
+.firework-type-btn:active {
+    transform: translateY(0);
+}
+
+.firework-type-btn svg {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+}
+
+.firework-type-name {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+/* OPEN CONSOLE按钮 */
+.open-console-btn {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+    background: rgba(30, 30, 50, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    padding: 10px 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 999;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    pointer-events: auto;
+}
+
+.open-console-btn.visible {
+    opacity: 1;
+}
+
+.open-console-btn.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.open-console-btn:hover {
+    background: rgba(40, 40, 65, 0.95);
+    border-color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* 响应式设计 */
+@media (max-width: 640px) {
+    .firework-console {
+        width: 95%;
+        bottom: 12px;
+    }
+
+    .console-header {
+        padding: 12px 14px;
+    }
+
+    .console-title {
+        font-size: 14px;
+    }
+
+    .console-status {
+        font-size: 10px;
+    }
+
+    .header-btn {
+        padding: 7px 10px;
+        font-size: 12px;
+    }
+
+    .header-btn .btn-text {
+        font-size: 11px;
+    }
+
+    .play-btn {
+        min-width: 70px;
+    }
+
+    .console-content {
+        padding: 12px 14px 16px;
+    }
+
+    .color-control-row {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .hue-slider {
+        width: 100%;
+    }
+
+    .firework-types-row {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .firework-type-btn {
+        flex: 0 0 calc(33.33% - 6px);
+        max-width: calc(33.33% - 6px);
+    }
+}

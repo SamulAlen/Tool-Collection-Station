@@ -1,0 +1,148 @@
+/* ==================== 侧边栏 ==================== */
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--sidebar-bg);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    z-index: 999;
+    transition: transform var(--transition-normal);
+}
+
+/* 侧边栏头部 */
+.sidebar-header {
+    padding: var(--spacing-lg) var(--spacing-md);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.logo-icon {
+    font-size: 2rem;
+}
+
+.logo-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--sidebar-text);
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* 侧边栏导航 */
+.sidebar-nav {
+    flex: 1;
+    padding: var(--spacing-md);
+    overflow-y: auto;
+}
+
+.nav-list {
+    list-style: none;
+}
+
+.nav-list li {
+    margin-bottom: var(--spacing-xs);
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: 14px var(--spacing-md);
+    color: var(--sidebar-text);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: all var(--transition-normal);
+}
+
+.nav-item:hover {
+    background: var(--sidebar-hover);
+    transform: translateX(5px);
+}
+
+.nav-item.active {
+    background: var(--primary-gradient);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    transform: translateX(0);
+}
+
+.nav-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.nav-text {
+    font-size: 1rem;
+    font-weight: 500;
+    flex: 1;
+}
+
+/* 拖拽手柄 */
+.drag-handle {
+    cursor: grab;
+    opacity: 0.4;
+    transition: opacity var(--transition-normal);
+    font-size: 1rem;
+    padding: 4px;
+}
+
+.drag-handle:hover {
+    opacity: 0.8;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.nav-item:hover .drag-handle {
+    opacity: 0.6;
+}
+
+/* 拖拽中的样式 */
+.nav-item.dragging {
+    opacity: 0.5;
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.nav-item.drag-over {
+    border-top: 2px solid var(--primary-color);
+}
+
+/* 禁用拖拽时的 hover 效果 */
+.nav-item.dragging:hover {
+    transform: scale(1.02);
+}
+
+/* 侧边栏底部 */
+.sidebar-footer {
+    padding: var(--spacing-md);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-footer p {
+    font-size: 0.875rem;
+    color: var(--sidebar-text-secondary);
+    text-align: center;
+}
+
+/* ==================== 汉堡菜单动画 ==================== */
+.menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}

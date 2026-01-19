@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="高级软件开发工程师个人简历网站，展示全栈开发技能和项目经验">
+    <meta name="keywords" content="软件工程师,前端开发,后端开发,全栈开发,简历,作品集">
+    <meta name="author" content="你的名字">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="你的名字 - 高级软件工程师">
+    <meta property="og:description" content="5年+全栈开发经验，精通React、Node.js等技术栈">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="你的名字 - 高级软件工程师">
+    <meta property="twitter:description" content="5年+全栈开发经验，精通React、Node.js等技术栈">
+
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "你的名字",
+      "jobTitle": "高级软件工程师",
+      "url": "https://yourwebsite.com",
+      "sameAs": [
+        "https://github.com/yourusername",
+        "https://linkedin.com/in/yourusername"
+      ]
+    }
+    </script>
+
+    <title>你的名字 - 高级软件工程师</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/particles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/timeline.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- 粒子背景画布 -->
+    <canvas id="particleCanvas" class="particle-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#home" class="logo-link">
+                <img src="images/logos/logo.png" alt="Logo" class="logo-image">
+                <span class="logo-text">Portfolio</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link">首页</a></li>
+                <li><a href="#about" class="nav-link">关于</a></li>
+                <li><a href="#experience" class="nav-link">经历</a></li>
+                <li><a href="#skills" class="nav-link">技能</a></li>
+                <li><a href="#projects" class="nav-link">项目</a></li>
+                <li><a href="#blog" class="nav-link">博客</a></li>
+                <li><a href="#contact" class="nav-link">联系</a></li>
+            </ul>
+            <button class="hamburger" aria-label="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <main>
+        <!-- 英雄区 -->
+        <section id="home" class="hero-section">
+            <div class="hero-content">
+                <div class="hero-avatar">
+                    <img src="images/avatar.png" alt="头像" class="avatar-image">
+                </div>
+                <h1 class="hero-title glitch-text" data-text="你的名字">你的名字</h1>
+                <p class="hero-subtitle">高级软件开发工程师</p>
+                <div class="hero-typewriter"></div>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary">联系我</a>
+                    <a href="#projects" class="btn btn-secondary">查看项目</a>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="GitHub">GitHub</a>
+                    <a href="#" class="social-link" aria-label="LinkedIn">LinkedIn</a>
+                    <a href="#" class="social-link" aria-label="Email">Email</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-shapes">
+                    <div class="shape shape-1"></div>
+                    <div class="shape shape-2"></div>
+                    <div class="shape shape-3"></div>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <span>向下滚动</span>
+                <div class="scroll-arrow"></div>
+            </div>
+        </section>
+
+        <!-- 个人简介 -->
+        <section id="about" class="about-section">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <h2 class="section-title">关于我</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="about-content">
+                    <div class="about-text fade-up">
+                        <h3>你好，我是一名全栈开发者</h3>
+                        <p>拥有5年以上的软件开发经验，专注于构建高性能、可扩展的Web应用。精通现代前端技术栈，同时具备深厚的后端开发能力。</p>
+                        <p>我相信优秀的产品需要精湛的技术与良好的用户体验相结合。在工作中，我注重代码质量、性能优化和团队协作。</p>
+                        <a href="#" class="btn btn-outline" download>下载简历</a>
+                    </div>
+                    <div class="about-stats">
+                        <div class="stat-card scale-up">
+                            <span class="stat-number" data-count="5">0</span>
+                            <span class="stat-label">年经验</span>
+                        </div>
+                        <div class="stat-card scale-up">
+                            <span class="stat-number" data-count="50">0</span>
+                            <span class="stat-label">完成项目</span>
+                        </div>
+                        <div class="stat-card scale-up">
+                            <span class="stat-number" data-count="20">0</span>
+                            <span class="stat-label">满意客户</span>
+                        </div>
+                        <div class="stat-card scale-up">
+                            <span class="stat-number" data-count="1000">0</span>
+                            <span class="stat-label">杯咖啡</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 工作经历 -->
+        <section id="experience" class="experience-section">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <h2 class="section-title">工作经历</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="timeline">
+                    <!-- 时间轴内容由 JS 动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 技能展示 -->
+        <section id="skills" class="skills-section">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <h2 class="section-title">技术技能</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="skills-container">
+                    <div class="skill-tabs fade-up">
+                        <button class="skill-tab active" data-category="frontend">前端开发</button>
+                        <button class="skill-tab" data-category="backend">后端开发</button>
+                        <button class="skill-tab" data-category="tools">工具 & 其他</button>
+                    </div>
+                    <div class="skills-grid">
+                        <!-- 技能卡片由 JS 动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 项目展示 -->
+        <section id="projects" class="projects-section">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <h2 class="section-title">项目作品</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="projects-grid">
+                    <!-- 项目卡片由 JS 动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 技术博客 -->
+        <section id="blog" class="blog-section">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <h2 class="section-title">技术文章</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="blog-grid">
+                    <!-- 博客卡片由 JS 动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 推荐语 -->
+        <section id="testimonials" class="testimonials-section">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <h2 class="section-title">推荐语</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="testimonials-grid">
+                    <!-- 推荐语由 JS 动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系方式 -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <h2 class="section-title">联系我</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="contact-container">
+                    <div class="contact-info fade-up">
+                        <div class="contact-item">
+                            <div class="contact-icon">📍</div>
+                            <div>
+                                <h4>位置</h4>
+                                <p>中国·北京</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📧</div>
+                            <div>
+                                <h4>邮箱</h4>
+                                <p>your.email@example.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📱</div>
+                            <div>
+                                <h4>电话</h4>
+                                <p>+86 138-0000-0000</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">💼</div>
+                            <div>
+                                <h4>可远程</h4>
+                                <p>支持远程协作</p>
+                            </div>
+                        </div>
+                    </div>
+                    <form class="contact-form fade-up" id="contactForm">
+                        <div class="form-group">
+                            <label for="name">姓名</label>
+                            <input type="text" id="name" name="name" required placeholder="请输入您的姓名">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">邮箱</label>
+                            <input type="email" id="email" name="email" required placeholder="请输入您的邮箱">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">主题</label>
+                            <input type="text" id="subject" name="subject" required placeholder="消息主题">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">留言</label>
+                            <textarea id="message" name="message" rows="5" required placeholder="请输入您的留言..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">发送消息</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 返回顶部按钮 -->
+    <button class="back-to-top" id="backToTop" aria-label="返回顶部">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6"/>
+        </svg>
+    </button>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 你的名字. All rights reserved.</p>
+            <div class="footer-social">
+                <a href="#" aria-label="GitHub">GitHub</a>
+                <a href="#" aria-label="LinkedIn">LinkedIn</a>
+                <a href="#" aria-label="Twitter">Twitter</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

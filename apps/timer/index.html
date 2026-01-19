@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>番茄计时器 - 提高你的工作效率</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header>
+            <h1>番茄计时器</h1>
+            <p class="subtitle">专注工作，高效休息</p>
+            <div class="header-controls">
+                <button id="themeBtn" class="icon-btn" title="切换主题">🎨</button>
+                <button id="settingsBtn" class="icon-btn" title="设置">⚙️</button>
+            </div>
+        </header>
+
+        <!-- 计时器卡片 -->
+        <section class="timer-card">
+            <!-- 模式指示器 -->
+            <div class="mode-indicator">
+                <span id="modeLabel" class="mode-label">工作模式</span>
+            </div>
+
+            <!-- 圆形进度条 -->
+            <div class="progress-ring">
+                <svg class="progress-svg" viewBox="0 0 200 200">
+                    <circle class="progress-bg" cx="100" cy="100" r="90"/>
+                    <circle id="progressBar" class="progress-bar" cx="100" cy="100" r="90"/>
+                </svg>
+                <div class="timer-display">
+                    <div id="timerTime" class="timer-time">25:00</div>
+                    <div id="timerStatus" class="timer-status">准备开始</div>
+                </div>
+            </div>
+
+            <!-- 控制按钮 -->
+            <div class="control-buttons">
+                <button id="startBtn" class="control-btn primary-btn">开始</button>
+                <button id="pauseBtn" class="control-btn" style="display: none;">暂停</button>
+                <button id="resetBtn" class="control-btn secondary-btn">重置</button>
+                <button id="skipBtn" class="control-btn secondary-btn">跳过</button>
+            </div>
+
+            <!-- 模式切换 -->
+            <div class="mode-buttons">
+                <button id="workModeBtn" class="mode-btn active" data-mode="work">工作</button>
+                <button id="shortBreakBtn" class="mode-btn" data-mode="shortBreak">短休息</button>
+                <button id="longBreakBtn" class="mode-btn" data-mode="longBreak">长休息</button>
+            </div>
+        </section>
+
+        <!-- 统计卡片 -->
+        <section class="stats-card">
+            <h2>📊 今日统计</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-icon">🍅</div>
+                    <div class="stat-content">
+                        <div id="todayCount" class="stat-value">0</div>
+                        <div class="stat-label">今日完成</div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-content">
+                        <div id="totalCount" class="stat-value">0</div>
+                        <div class="stat-label">累计完成</div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-content">
+                        <div id="focusTime" class="stat-value">0h 0m</div>
+                        <div class="stat-label">专注时长</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 任务管理卡片 -->
+        <section class="tasks-card">
+            <h2>📝 任务列表</h2>
+            <div class="task-input">
+                <input type="text" id="taskInput" placeholder="添加新任务..." maxlength="100">
+                <button id="addTaskBtn" class="add-task-btn">添加</button>
+            </div>
+            <div id="taskList" class="task-list">
+                <p class="empty-state">暂无任务，添加一个任务开始吧！</p>
+            </div>
+        </section>
+
+        <!-- 设置面板 -->
+        <div id="settingsPanel" class="settings-panel" style="display: none;">
+            <div class="settings-content">
+                <div class="settings-header">
+                    <h2>⚙️ 设置</h2>
+                    <button id="closeSettingsBtn" class="close-btn">×</button>
+                </div>
+
+                <div class="settings-section">
+                    <h3>时间设置（分钟）</h3>
+                    <div class="setting-item">
+                        <label for="workTime">工作时长</label>
+                        <input type="number" id="workTime" min="1" max="60" value="25">
+                    </div>
+                    <div class="setting-item">
+                        <label for="shortBreakTime">短休息</label>
+                        <input type="number" id="shortBreakTime" min="1" max="30" value="5">
+                    </div>
+                    <div class="setting-item">
+                        <label for="longBreakTime">长休息</label>
+                        <input type="number" id="longBreakTime" min="1" max="60" value="15">
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>提醒设置</h3>
+                    <div class="setting-item">
+                        <label for="autoStart">自动开始下一个</label>
+                        <input type="checkbox" id="autoStart">
+                    </div>
+                    <div class="setting-item">
+                        <label for="soundEnabled">启用声音</label>
+                        <input type="checkbox" id="soundEnabled" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="soundVolume">音量</label>
+                        <input type="range" id="soundVolume" min="0" max="100" value="70">
+                    </div>
+                    <div class="setting-item">
+                        <label for="notificationEnabled">桌面通知</label>
+                        <input type="checkbox" id="notificationEnabled" checked>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>主题</h3>
+                    <div class="theme-selector">
+                        <button class="theme-option" data-theme="tomato" title="经典番茄红">🍅</button>
+                        <button class="theme-option" data-theme="mint" title="清新薄荷绿">🌿</button>
+                        <button class="theme-option" data-theme="ocean" title="宁静海洋蓝">🌊</button>
+                        <button class="theme-option" data-theme="sunshine" title="温暖阳光橙">☀️</button>
+                        <button class="theme-option" data-theme="violet" title="优雅紫罗兰">💜</button>
+                    </div>
+                </div>
+
+                <div class="settings-section danger-zone">
+                    <h3>数据管理</h3>
+                    <button id="resetDataBtn" class="danger-btn">清除所有数据</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 通知提示 -->
+        <div id="notification" class="notification" style="display: none;"></div>
+    </div>
+
+    <!-- 页面闪烁提醒覆盖层 -->
+    <div id="flashOverlay" class="flash-overlay"></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/tasks.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>

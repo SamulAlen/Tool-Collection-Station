@@ -1,0 +1,590 @@
+/* ==================== 全局样式重置 ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-primary: #2d3748;
+    --text-secondary: #718096;
+    --accent-color: #667eea;
+    --accent-hover: #5a67d8;
+    --success-color: #48bb78;
+    --error-color: #f56565;
+    --warning-color: #ed8936;
+    --border-radius: 16px;
+    --box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--primary-gradient);
+    min-height: 100vh;
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* ==================== 容器布局 ==================== */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* ==================== 头部样式 ==================== */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    color: white;
+}
+
+header h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: 10px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+header .subtitle {
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    opacity: 0.95;
+}
+
+/* ==================== 卡片通用样式 ==================== */
+.converter-card,
+.rate-table-card,
+.favorites-card,
+.history-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 30px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.converter-card {
+    margin-bottom: 30px;
+}
+
+/* ==================== 货币选择器 ==================== */
+.currency-selectors {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.selector-group {
+    flex: 1;
+    min-width: 140px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.selector-group label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.selector-group select {
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    background: white;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23718096' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 40px;
+}
+
+.selector-group select:hover {
+    border-color: var(--accent-color);
+}
+
+.selector-group select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+/* ==================== 交换按钮 ==================== */
+.swap-btn {
+    width: 50px;
+    height: 50px;
+    border: none;
+    background: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    flex-shrink: 0;
+    align-self: flex-end;
+    margin-bottom: 5px;
+}
+
+.swap-btn:hover {
+    background: var(--accent-hover);
+    transform: scale(1.1);
+}
+
+.swap-btn:active {
+    transform: scale(0.95) rotate(180deg);
+}
+
+.swap-btn.rotating {
+    animation: swapRotate 0.3s ease;
+}
+
+@keyframes swapRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(180deg); }
+}
+
+/* ==================== 输入区域 ==================== */
+.input-section {
+    margin-bottom: 25px;
+}
+
+.input-section input {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.input-section input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.input-section input::placeholder {
+    color: #cbd5e0;
+}
+
+/* ==================== 结果区域 ==================== */
+.result-section {
+    text-align: center;
+    padding: 25px;
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.result-value {
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 10px;
+    word-break: break-all;
+}
+
+.rate-info {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+}
+
+.update-time {
+    font-size: 0.85rem;
+    color: #a0aec0;
+}
+
+/* ==================== 操作按钮 ==================== */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    flex: 1;
+    min-width: 140px;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.copy-btn {
+    background: var(--accent-color);
+    color: white;
+}
+
+.copy-btn:hover:not(:disabled) {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.favorite-btn {
+    background: #edf2f7;
+    color: var(--text-primary);
+}
+
+.favorite-btn:hover:not(:disabled) {
+    background: #e2e8f0;
+    transform: translateY(-2px);
+}
+
+.favorite-btn.active {
+    background: #ecc94b;
+    color: white;
+}
+
+.action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ==================== 汇率速查表 ==================== */
+.rate-table-card h2,
+.favorites-card h2,
+.history-card h2 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+}
+
+.rate-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.rate-item {
+    padding: 12px 16px;
+    background: #f7fafc;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: var(--transition);
+}
+
+.rate-item:hover {
+    background: #edf2f7;
+    transform: translateY(-2px);
+}
+
+.rate-pair {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.rate-value {
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+.loading {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 20px;
+}
+
+/* ==================== 收藏货币对 ==================== */
+.favorites-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.favorite-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #f7fafc;
+    border-radius: 12px;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.favorite-item:hover {
+    background: #edf2f7;
+    transform: translateX(5px);
+}
+
+.favorite-pair {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.favorite-remove {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    transition: var(--transition);
+}
+
+.favorite-remove:hover {
+    color: var(--error-color);
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 20px;
+    font-style: italic;
+}
+
+/* ==================== 转换历史 ==================== */
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.clear-btn {
+    padding: 8px 16px;
+    background: #fed7d7;
+    color: var(--error-color);
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.clear-btn:hover {
+    background: #feb2b2;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: #f7fafc;
+    border-radius: 10px;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.history-item:hover {
+    background: #edf2f7;
+}
+
+.history-details {
+    flex: 1;
+}
+
+.history-conversion {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+}
+
+.history-time {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* ==================== 离线模式提示 ==================== */
+.offline-notice {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--warning-color);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* ==================== 通知提示 ==================== */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    animation: slideIn 0.3s ease;
+}
+
+.notification.success {
+    background: var(--success-color);
+    color: white;
+}
+
+.notification.error {
+    background: var(--error-color);
+    color: white;
+}
+
+.notification.info {
+    background: var(--accent-color);
+    color: white;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ==================== 响应式设计 ==================== */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+
+    header {
+        margin-bottom: 25px;
+    }
+
+    .converter-card,
+    .rate-table-card,
+    .favorites-card,
+    .history-card {
+        padding: 20px;
+    }
+
+    .currency-selectors {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .swap-btn {
+        align-self: center;
+        margin: 10px 0;
+    }
+
+    .rate-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .action-btn {
+        width: 100%;
+    }
+
+    .history-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .clear-btn {
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    .result-value {
+        font-size: 1.8rem;
+    }
+
+    .input-section input {
+        font-size: 1.2rem;
+        padding: 12px 16px;
+    }
+}
+
+/* ==================== 滚动条样式 ==================== */
+.history-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.history-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+}
+
+.history-list::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+/* ==================== 打印样式 ==================== */
+@media print {
+    body {
+        background: white;
+        padding: 0;
+    }
+
+    .converter-card,
+    .rate-table-card,
+    .favorites-card,
+    .history-card {
+        box-shadow: none;
+        page-break-inside: avoid;
+    }
+
+    .action-buttons,
+    .clear-btn {
+        display: none;
+    }
+}

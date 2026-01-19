@@ -1,0 +1,133 @@
+/* ==================== 平板设备 (<= 1024px) ==================== */
+@media (max-width: 1024px) {
+    /* 侧边栏默认隐藏 */
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        transform: translateX(-100%);
+    }
+
+    /* 侧边栏激活状态 */
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    /* 显示汉堡菜单按钮 */
+    .menu-toggle {
+        display: flex;
+    }
+
+    /* 遮罩层 */
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    /* 页面标题调整 */
+    .page-title {
+        font-size: 1.25rem;
+    }
+
+    /* 内容头部间距调整 */
+    .content-header {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+}
+
+/* ==================== 移动设备 (<= 768px) ==================== */
+@media (max-width: 768px) {
+    /* 侧边栏宽度 */
+    .sidebar {
+        width: 280px;
+    }
+
+    /* 头部样式调整 */
+    .content-header {
+        gap: var(--spacing-sm);
+    }
+
+    /* 页面标题 */
+    .page-title {
+        font-size: 1.125rem;
+    }
+
+    /* 汉堡菜单按钮 */
+    .menu-toggle {
+        padding: 6px;
+    }
+
+    .menu-toggle span {
+        width: 20px;
+    }
+
+    /* 导航项调整 */
+    .nav-item {
+        padding: 12px var(--spacing-md);
+    }
+
+    .nav-icon {
+        font-size: 1.25rem;
+    }
+
+    .nav-text {
+        font-size: 0.9375rem;
+    }
+
+    /* Logo 调整 */
+    .logo-icon {
+        font-size: 1.5rem;
+    }
+
+    .logo-text {
+        font-size: 1.125rem;
+    }
+}
+
+/* ==================== 小屏移动设备 (<= 480px) ==================== */
+@media (max-width: 480px) {
+    /* 侧边栏全屏 */
+    .sidebar {
+        width: 100%;
+    }
+
+    /* 内容头部 */
+    .content-header {
+        padding: var(--spacing-sm);
+    }
+
+    /* 页面标题 */
+    .page-title {
+        font-size: 1rem;
+    }
+}
+
+/* ==================== 大屏设备 (> 1440px) ==================== */
+@media (min-width: 1441px) {
+    /* 侧边栏加宽 */
+    .sidebar {
+        width: 300px;
+    }
+
+    /* 导航项加大间距 */
+    .nav-item {
+        padding: 16px var(--spacing-lg);
+    }
+
+    .nav-icon {
+        font-size: 1.75rem;
+    }
+
+    .nav-text {
+        font-size: 1.0625rem;
+    }
+
+    /* Logo 加大 */
+    .logo-icon {
+        font-size: 2.25rem;
+    }
+
+    .logo-text {
+        font-size: 1.375rem;
+    }
+}

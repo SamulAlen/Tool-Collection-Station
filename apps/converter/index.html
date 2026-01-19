@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多国货币转换器</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌍 多国货币转换器</h1>
+            <p class="subtitle">实时汇率 · 精准转换 · 简单易用</p>
+        </header>
+
+        <!-- 主转换器卡片 -->
+        <section class="converter-card">
+            <div class="currency-selectors">
+                <div class="selector-group">
+                    <label for="fromCurrency">从</label>
+                    <select id="fromCurrency"></select>
+                </div>
+                <button id="swapBtn" class="swap-btn" title="交换货币">⇄</button>
+                <div class="selector-group">
+                    <label for="toCurrency">到</label>
+                    <select id="toCurrency"></select>
+                </div>
+            </div>
+
+            <div class="input-section">
+                <input type="number" id="amount" placeholder="输入金额" min="0" step="0.01" value="100">
+            </div>
+
+            <div class="result-section">
+                <div id="result" class="result-value">--</div>
+                <div id="rateInfo" class="rate-info">准备转换...</div>
+                <div id="updateTime" class="update-time"></div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="convertBtn" class="action-btn">🔄 转换</button>
+                <button id="copyBtn" class="action-btn copy-btn">📋 复制结果</button>
+                <button id="addFavoriteBtn" class="action-btn favorite-btn">⭐ 收藏</button>
+            </div>
+        </section>
+
+        <!-- 汇率速查表 -->
+        <section class="rate-table-card">
+            <h2>📊 常见汇率速查</h2>
+            <div id="rateTable" class="rate-grid">
+                <div class="loading">点击"转换"按钮获取汇率</div>
+            </div>
+        </section>
+
+        <!-- 收藏货币对 -->
+        <section class="favorites-card">
+            <h2>⭐ 收藏的货币对</h2>
+            <div id="favorites" class="favorites-list">
+                <p class="empty-state">暂无收藏，点击"收藏"按钮添加常用货币对</p>
+            </div>
+        </section>
+
+        <!-- 转换历史 -->
+        <section class="history-card">
+            <div class="history-header">
+                <h2>📜 转换历史</h2>
+                <button id="clearHistory" class="clear-btn">清除历史</button>
+            </div>
+            <div id="history" class="history-list">
+                <p class="empty-state">暂无转换记录</p>
+            </div>
+        </section>
+
+        <!-- 离线模式提示 -->
+        <div id="offlineNotice" class="offline-notice" style="display: none;">
+            ⚠️ 当前使用固定汇率
+        </div>
+
+        <!-- 通知提示 -->
+        <div id="notification" class="notification" style="display: none;"></div>
+    </div>
+
+    <script>
+        // ==================== 配置数据 ====================
+        const currencies = [
+            { code: 'USD', name: '美元', symbol: '$', flag: '🇺🇸' },
+            { code: 'CNY', name: '人民币', symbol: '¥', flag: '🇨🇳' },
+            { code: 'EUR', name: '欧元', symbol: '€', flag: '🇪🇺' },
+            { code: 'JPY', name: '日元', symbol: '¥', flag: '🇯🇵' },
+            { code: 'GBP', name: '英镑', symbol: '£', flag: '🇬🇧' },
+            { code: 'KRW', name: '韩元', symbol: '₩', flag: '🇰🇷' },
+            { code: 'HKD', name: '港币', symbol: 'HK$', flag: '🇭🇰' },
+            { code: 'AUD', name: '澳元', symbol: 'A$', flag: '🇦🇺' },
+            { code: 'CAD', name: '加元', symbol: 'C$', flag: '🇨🇦' },
+            { code: 'CHF', name: '瑞士法郎', symbol: 'Fr', flag: '🇨🇭' },
+            { code: 'SGD', name: '新加坡元', symbol: 'S$', flag: '🇸🇬' },
+            { code: 'INR', name: '印度卢比', symbol: '₹', flag: '🇮🇳' }
+        ];
+
+        // 固定汇率数据（基于USD）
+        const baseRates = {
+            USD: 1,
+            CNY: 7.24,
+            EUR: 0.92,
+            JPY: 149.50,
+            GBP: 0.79,
+            KRW: 1320.50,
+            HKD: 7.83,
+            AUD: 1.53,
+            CAD: 1.36,
+            CHF: 0.88,
+            SGD: 1.34,
+            INR: 83.12
+        };
+
+        // 默认设置
+        const defaults = {
+            fromCurrency: 'USD',
+            toCurrency: 'CNY',
+            amount: 100,
+            maxHistoryItems: 20
+        };
+
+        // ==================== 应用状态 ====================
+        const appState = {
+            rates: null,
+            currentBaseCurrency: defaults.fromCurrency
+        };
+
+        // ==================== 工具函数 ====================
+        function getRates(baseCurrency) {
+            const baseRate = baseRates[baseCurrency] || 1;
+            const rates = {};
+
+            for (const [code, rate] of Object.entries(baseRates)) {
+                rates[code] = rate / baseRate;
+            }
+
+            return rates;
+        }
+
+        function formatHistoryTime(timestamp) {
+            const now = Date.now();
+            const diff = now - timestamp;
+
+            if (diff < 60000) return '刚刚';
+            if (diff < 3600000) return Math.floor(diff / 60000) + '分钟前';
+            if (diff < 86400000) return Math.floor(diff / 3600000) + '小时前';
+            if (diff < 604800000) return Math.floor(diff / 86400000) + '天前';
+
+            return new Date(timestamp).toLocaleDateString('zh-CN', {
+                month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit'
+            });
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block';
+
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // ==================== UI操作函数 ====================
+        function populateCurrencySelectors() {
+            const optionsHTML = currencies.map(currency =>
+                `<option value="${currency.code}">${currency.flag} ${currency.code} - ${currency.name}</option>`
+            ).join('');
+
+            document.getElementById('fromCurrency').innerHTML = optionsHTML;
+            document.getElementById('toCurrency').innerHTML = optionsHTML;
+            document.getElementById('fromCurrency').value = defaults.fromCurrency;
+            document.getElementById('toCurrency').value = defaults.toCurrency;
+
+            console.log('货币选择器已填充，共', currencies.length, '种货币');
+        }
+
+        function updateRateTable(baseCurrency) {
+            const rates = getRates(baseCurrency);
+            const displayCurrencies = currencies.filter(c => c.code !== baseCurrency).slice(0, 8);
+
+            const html = displayCurrencies.map(currency => {
+                const rate = rates[currency.code];
+                const baseCurrencyInfo = currencies.find(c => c.code === baseCurrency);
+                return `
+                    <div class="rate-item">
+                        <span class="rate-pair">${baseCurrencyInfo.symbol}/${currency.code}</span>
+                        <span class="rate-value">${rate.toFixed(4)}</span>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('rateTable').innerHTML = html;
+        }
+
+        function updateFavoritesList() {
+            const favorites = JSON.parse(localStorage.getItem('currency_converter_favorites') || '[]');
+
+            if (favorites.length === 0) {
+                document.getElementById('favorites').innerHTML = '<p class="empty-state">暂无收藏，点击"收藏"按钮添加常用货币对</p>';
+                return;
+            }
+
+            const html = favorites.map((fav, index) => {
+                const fromCurrency = currencies.find(c => c.code === fav.from);
+                const toCurrency = currencies.find(c => c.code === fav.to);
+                return `
+                    <div class="favorite-item" data-index="${index}">
+                        <span class="favorite-pair">
+                            ${fromCurrency?.flag || ''} ${fav.from} → ${toCurrency?.flag || ''} ${fav.to}
+                        </span>
+                        <button class="favorite-remove" data-index="${index}">×</button>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('favorites').innerHTML = html;
+
+            // 绑定点击事件
+            document.querySelectorAll('.favorite-item').forEach((item, index) => {
+                item.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('favorite-remove')) return;
+                    const fav = favorites[index];
+                    document.getElementById('fromCurrency').value = fav.from;
+                    document.getElementById('toCurrency').value = fav.to;
+                    appState.currentBaseCurrency = fav.from;
+                    performConvert();
+                    updateFavoriteButton();
+                });
+            });
+
+            document.querySelectorAll('.favorite-remove').forEach((btn, index) => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    favorites.splice(index, 1);
+                    localStorage.setItem('currency_converter_favorites', JSON.stringify(favorites));
+                    updateFavoritesList();
+                    updateFavoriteButton();
+                    showNotification('已从收藏中移除', 'success');
+                });
+            });
+        }
+
+        function updateHistoryList() {
+            const history = JSON.parse(localStorage.getItem('currency_converter_history') || '[]');
+
+            if (history.length === 0) {
+                document.getElementById('history').innerHTML = '<p class="empty-state">暂无转换记录</p>';
+                return;
+            }
+
+            const html = history.map((item, index) => `
+                <div class="history-item" data-index="${index}">
+                    <div class="history-details">
+                        <div class="history-conversion">${item.conversion}</div>
+                        <div class="history-time">${formatHistoryTime(item.timestamp)}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('history').innerHTML = html;
+
+            // 绑定点击事件
+            document.querySelectorAll('.history-item').forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    const record = history[index];
+                    document.getElementById('fromCurrency').value = record.from;
+                    document.getElementById('toCurrency').value = record.to;
+                    document.getElementById('amount').value = record.amount;
+                    appState.currentBaseCurrency = record.from;
+                    performConvert();
+                    updateFavoriteButton();
+                });
+            });
+        }
+
+        function updateFavoriteButton() {
+            const from = document.getElementById('fromCurrency').value;
+            const to = document.getElementById('toCurrency').value;
+            const favorites = JSON.parse(localStorage.getItem('currency_converter_favorites') || '[]');
+            const isFav = favorites.some(fav => fav.from === from && fav.to === to);
+
+            const btn = document.getElementById('addFavoriteBtn');
+            if (isFav) {
+                btn.classList.add('active');
+                btn.textContent = '★ 已收藏';
+            } else {
+                btn.classList.remove('active');
+                btn.textContent = '⭐ 收藏';
+            }
+        }
+
+        // ==================== 核心功能 ====================
+        function performConvert() {
+            const from = document.getElementById('fromCurrency').value;
+            const to = document.getElementById('toCurrency').value;
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+
+            if (from === to) {
+                showNotification('请选择不同的货币', 'error');
+                return;
+            }
+
+            if (amount <= 0) {
+                document.getElementById('result').textContent = '--';
+                document.getElementById('rateInfo').textContent = '请输入有效金额';
+                return;
+            }
+
+            // 获取汇率
+            const rates = getRates(from);
+            const rate = rates[to];
+            const result = amount * rate;
+
+            // 格式化结果
+            const toCurrency = currencies.find(c => c.code === to);
+            const fromCurrency = currencies.find(c => c.code === from);
+            const formattedResult = `${toCurrency.symbol} ${result.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+            // 更新UI
+            document.getElementById('result').textContent = formattedResult;
+            document.getElementById('rateInfo').textContent = `1 ${fromCurrency.symbol} = ${rate.toFixed(4)} ${toCurrency.symbol}`;
+            document.getElementById('updateTime').textContent = new Date().toLocaleString('zh-CN');
+
+            // 更新汇率速查表
+            updateRateTable(from);
+
+            // 保存历史记录
+            if (amount > 0 && result > 0) {
+                const history = JSON.parse(localStorage.getItem('currency_converter_history') || '[]');
+                history.unshift({
+                    conversion: `${amount} ${from} → ${formattedResult} ${to}`,
+                    from, to, amount, result: formattedResult,
+                    timestamp: Date.now()
+                });
+                // 限制历史记录数量
+                if (history.length > defaults.maxHistoryItems) {
+                    history.pop();
+                }
+                localStorage.setItem('currency_converter_history', JSON.stringify(history));
+                updateHistoryList();
+            }
+
+            console.log('转换完成:', amount, from, '→', result.toFixed(2), to);
+        }
+
+        function swapCurrencies() {
+            const from = document.getElementById('fromCurrency');
+            const to = document.getElementById('toCurrency');
+            const temp = from.value;
+            from.value = to.value;
+            to.value = temp;
+
+            appState.currentBaseCurrency = from.value;
+
+            // 添加旋转动画
+            const swapBtn = document.getElementById('swapBtn');
+            swapBtn.classList.add('rotating');
+            setTimeout(() => swapBtn.classList.remove('rotating'), 300);
+
+            performConvert();
+            updateFavoriteButton();
+        }
+
+        function copyResult() {
+            const result = document.getElementById('result').textContent;
+            if (result === '--') return;
+
+            navigator.clipboard.writeText(result).then(() => {
+                showNotification('已复制到剪贴板', 'success');
+            }).catch(() => {
+                showNotification('复制失败，请手动复制', 'error');
+            });
+        }
+
+        function toggleFavorite() {
+            const from = document.getElementById('fromCurrency').value;
+            const to = document.getElementById('toCurrency').value;
+
+            let favorites = JSON.parse(localStorage.getItem('currency_converter_favorites') || '[]');
+            const existingIndex = favorites.findIndex(fav => fav.from === from && fav.to === to);
+
+            if (existingIndex >= 0) {
+                favorites.splice(existingIndex, 1);
+                showNotification('已从收藏中移除', 'success');
+            } else {
+                favorites.push({ from, to, timestamp: Date.now() });
+                showNotification('已添加到收藏', 'success');
+            }
+
+            localStorage.setItem('currency_converter_favorites', JSON.stringify(favorites));
+            updateFavoritesList();
+            updateFavoriteButton();
+        }
+
+        function clearHistory() {
+            localStorage.removeItem('currency_converter_history');
+            updateHistoryList();
+            showNotification('历史记录已清除', 'success');
+        }
+
+        // ==================== 初始化 ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('页面已加载，初始化中...');
+
+            // 填充货币选择器
+            populateCurrencySelectors();
+
+            // 显示固定汇率提示
+            document.getElementById('offlineNotice').style.display = 'block';
+
+            // 绑定事件
+            document.getElementById('convertBtn').addEventListener('click', performConvert);
+            document.getElementById('swapBtn').addEventListener('click', swapCurrencies);
+            document.getElementById('copyBtn').addEventListener('click', copyResult);
+            document.getElementById('addFavoriteBtn').addEventListener('click', toggleFavorite);
+            document.getElementById('clearHistory').addEventListener('click', clearHistory);
+
+            // 货币选择器变化时
+            document.getElementById('fromCurrency').addEventListener('change', () => {
+                appState.currentBaseCurrency = document.getElementById('fromCurrency').value;
+                performConvert();
+                updateFavoriteButton();
+            });
+
+            document.getElementById('toCurrency').addEventListener('change', () => {
+                performConvert();
+                updateFavoriteButton();
+            });
+
+            // 金额输入变化（带防抖）
+            let debounceTimer;
+            document.getElementById('amount').addEventListener('input', () => {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    performConvert();
+                }, 300);
+            });
+
+            // 加载收藏列表
+            updateFavoritesList();
+
+            // 更新收藏按钮状态
+            updateFavoriteButton();
+
+            // 执行初始转换
+            performConvert();
+
+            console.log('初始化完成');
+        });
+    </script>
+</body>
+</html>

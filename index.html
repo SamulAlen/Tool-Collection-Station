@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工具集合站 - 你的在线工具箱</title>
+    <meta name="description" content="集合多种实用工具的在线工具箱，包括货币转换器、番茄计时器、单词消消乐、烟花秀、神秘塔罗、节点知识库等">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">🧰</span>
+                    <span class="logo-text">工具箱</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li>
+                        <a href="#notepoint" class="nav-item" data-app="notepoint">
+                            <span class="nav-icon">📝</span>
+                            <span class="nav-text">节点知识库</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#game" class="nav-item" data-app="game">
+                            <span class="nav-icon">🎮</span>
+                            <span class="nav-text">单词消消乐</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#converter" class="nav-item" data-app="converter">
+                            <span class="nav-icon">💱</span>
+                            <span class="nav-text">货币转换</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#timer" class="nav-item" data-app="timer">
+                            <span class="nav-icon">🍅</span>
+                            <span class="nav-text">番茄计时</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#tarot" class="nav-item" data-app="tarot">
+                            <span class="nav-icon">🔮</span>
+                            <span class="nav-text">神秘塔罗</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#fire" class="nav-item" data-app="fire">
+                            <span class="nav-icon">🎆</span>
+                            <span class="nav-text">烟花秀</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#about" class="nav-item" data-app="about">
+                            <span class="nav-icon">👤</span>
+                            <span class="nav-text">关于</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>&copy; 2025 工具集合站</p>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <header class="content-header">
+                <button class="menu-toggle" id="menuToggle" aria-label="切换菜单">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <h1 class="page-title" id="pageTitle">工具箱</h1>
+            </header>
+
+            <div class="content-area">
+                <iframe id="appFrame" class="app-frame" title="应用内容"></iframe>
+            </div>
+        </main>
+
+        <!-- 移动端遮罩层 -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    </div>
+
+    <!-- 加载脚本 -->
+    <script src="js/config.js"></script>
+    <script src="js/iframe-controller.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/drag-reorder.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
